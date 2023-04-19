@@ -130,3 +130,6 @@ dmypy.json
 
 # JSON files
 *.json
+
+# idea folder created by Pycharm
+.idea/
