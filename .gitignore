@@ -128,7 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# JSON files
+# JSON files / input data
+/data/
 *.json
 
 # idea folder created by Pycharm
