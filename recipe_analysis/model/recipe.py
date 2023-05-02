@@ -29,14 +29,21 @@ class Recipe:
             all_steps = f'{all_steps}\n{str(s)}'
         return all_steps.strip()
 
-    def filter_steps(self, term: str):
-        pattern = re.compile(f'^(?=.*\\b{term}\\b).*$')
+    def filter_complete(self, term: str):
+        pattern = re.compile(f'^(?=.*\\b{term.lower()}\\b).*$')
+        in_steps = self.__filter_steps(pattern)
+        in_title = pattern.search(self.get_title().lower()) is not None
+        self.set_visibility(in_steps or in_title)
+
+    def __filter_steps(self, pattern) -> bool:
         has_vis_step = False
-        for idx, s in enumerate(self.__step_list):
-            if pattern.search(s.get_step_desc()) is not None:
+        for s in self.__step_list:
+            if pattern.search(s.get_step_desc().lower()) is not None:
                 s.set_visibility(True)
                 has_vis_step = True
-        self.set_visibility(has_vis_step)
+            else:
+                s.set_visibility(False)
+        return has_vis_step
 
     def reset_filter(self):
         self.set_visibility(True)
