@@ -13,13 +13,15 @@ class RecipeTableView(QTableWidget):
 
     def set_data(self):
         headers = ['Recipe Title', 'Steps']
-        for idx, r in enumerate(self.__data):
-            if not isinstance(r, Recipe):
+        count = 0
+        for r in self.__data:
+            if not isinstance(r, Recipe) or not r.is_visible():
                 continue
             title = QTableWidgetItem(r.get_title())
             steps = QTableWidgetItem(r.get_steps_as_single_string())
-            self.setItem(idx, 0, title)
-            self.setItem(idx, 1, steps)
+            self.setItem(count, 0, title)
+            self.setItem(count, 1, steps)
+            count = count+1
         self.setHorizontalHeaderLabels(headers)
 
     def resizeColumnsToContents(self):
