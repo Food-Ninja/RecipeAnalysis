@@ -13,7 +13,7 @@ def visualize_recipes(args, recipes: List[Recipe]):
     sys.exit(app.exec_())
 
 
-def count_visible_recipes(recipes: List[Recipe]):
+def count_visible_recipes(recipes: List[Recipe]) -> int:
     count = 0
     for r in recipes:
         if r.is_visible():

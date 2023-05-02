@@ -9,19 +9,19 @@ class Recipe:
         self.__step_list = steps
         self.__visibility = True
 
-    def get_title(self):
+    def get_title(self) -> str:
         return self.__title
 
-    def get_step_list(self):
+    def get_step_list(self) -> List[Step]:
         return self.__step_list
 
-    def is_visible(self):
+    def is_visible(self) -> bool:
         return self.__visibility
 
-    def set_visibility(self, new_val):
+    def set_visibility(self, new_val: bool):
         self.__visibility = new_val
 
-    def get_steps_as_single_string(self):
+    def get_steps_as_single_string(self) -> str:
         all_steps = ''
         for s in self.__step_list:
             if not s.is_visible():
@@ -29,7 +29,7 @@ class Recipe:
             all_steps = f'{all_steps}\n{str(s)}'
         return all_steps.strip()
 
-    def filter_steps(self, term):
+    def filter_steps(self, term: str):
         pattern = re.compile(f'^(?=.*\\b{term}\\b).*$')
         has_vis_step = False
         for idx, s in enumerate(self.__step_list):

@@ -1,10 +1,11 @@
 import json
 import os
+from typing import List
 from recipe_analysis.model.recipe import Recipe
 from recipe_analysis.model.instr_step import Step
 
 
-def read_recipes():
+def read_recipes() -> List[Recipe]:
     data_dir = './data/'
     json_files = [pos_json for pos_json in os.listdir(data_dir) if pos_json.endswith('.json')]
     recipes = []

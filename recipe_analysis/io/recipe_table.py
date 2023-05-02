@@ -1,9 +1,10 @@
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView
+from typing import List
 from recipe_analysis.model.recipe import Recipe
 
 
 class RecipeTableView(QTableWidget):
-    def __init__(self, data, *args):
+    def __init__(self, data: List[Recipe], *args):
         QTableWidget.__init__(self, *args)
         self.__data = data
         self.set_data()
