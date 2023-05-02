@@ -9,9 +9,6 @@ class Recipe:
         self.__step_list = steps
         self.__visibility = True
 
-    def print_recipe(self):
-        print(f'{self.__title}:\n{self.get_steps_as_single_string()}')
-
     def get_title(self):
         return self.__title
 
@@ -45,3 +42,6 @@ class Recipe:
         self.set_visibility(True)
         for s in self.__step_list:
             s.set_visibility(True)
+
+    def __str__(self):
+        print(f'{self.__title}:\n{self.get_steps_as_single_string()}')
