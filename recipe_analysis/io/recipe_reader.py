@@ -1,6 +1,7 @@
 import json
 import os
 from recipe_analysis.model.recipe import Recipe
+from recipe_analysis.model.instr_step import Step
 
 
 def read_recipes():
@@ -13,7 +14,10 @@ def read_recipes():
         with open(os.path.join(data_dir, js)) as json_file:
             json_text = json.load(json_file)
             for rec in json_text:
-                instructions = [step['text'] for step in rec['instructions']]
+                instructions = []
+                for idx, s in enumerate(rec['instructions']):
+                    step = Step(idx+1, s['text'])
+                    instructions.append(step)
                 r = Recipe(rec['title'], instructions)
                 recipes.append(r)
             print(f'File {index+1} of {len(json_files)} - {len(json_text)} recipes')

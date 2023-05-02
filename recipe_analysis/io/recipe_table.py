@@ -15,9 +15,9 @@ class RecipeTableView(QTableWidget):
         headers = ['Recipe Title', 'Steps']
         for idx, r in enumerate(self.__data):
             if not isinstance(r, Recipe):
-                break
+                continue
             title = QTableWidgetItem(r.get_title())
-            steps = QTableWidgetItem(r.get_all_steps())
+            steps = QTableWidgetItem(r.get_steps_as_single_string())
             self.setItem(idx, 0, title)
             self.setItem(idx, 1, steps)
         self.setHorizontalHeaderLabels(headers)
