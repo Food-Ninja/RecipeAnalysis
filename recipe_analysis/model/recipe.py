@@ -20,7 +20,7 @@ class Recipe:
     def get_steps_as_single_string(self):
         all_steps = ''
         for s in self.__step_list:
-            if not s.get_visibility():
+            if not s.is_visible():
                 continue
             all_steps = f'{all_steps}\n{str(s)}'
         return all_steps.strip()

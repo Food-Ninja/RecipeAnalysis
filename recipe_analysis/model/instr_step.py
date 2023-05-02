@@ -10,7 +10,7 @@ class Step:
     def get_step_desc(self):
         return self.__desc
 
-    def get_visibility(self):
+    def is_visible(self):
         return self.__visible
 
     def set_visibility(self, new_val):
