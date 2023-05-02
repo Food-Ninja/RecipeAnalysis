@@ -1,14 +1,14 @@
 import json
 import os
 from typing import List
-from recipe_analysis.model.recipe import Recipe
-from recipe_analysis.model.instr_step import Step
+from ..model import Recipe, Step
 
 
 def read_recipes() -> List[Recipe]:
     data_dir = './data/'
     json_files = [pos_json for pos_json in os.listdir(data_dir) if pos_json.endswith('.json')]
     recipes = []
+    # TODO: substitute logging with progress bar / GUI
     print(f'Importing the recipes from {data_dir}:')
 
     for index, js in enumerate(json_files):

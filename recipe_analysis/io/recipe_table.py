@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView
 from typing import List
-from recipe_analysis.model.recipe import Recipe
+from ..model import Recipe
 
 
 class RecipeTableView(QTableWidget):
@@ -19,6 +19,7 @@ class RecipeTableView(QTableWidget):
         rows = self.count_visible_recipes()
         self.setRowCount(rows)
         count = 0
+
         for r in self.__data:
             if not isinstance(r, Recipe) or not r.is_visible():
                 continue
@@ -26,7 +27,7 @@ class RecipeTableView(QTableWidget):
             steps = QTableWidgetItem(r.get_steps_as_single_string())
             self.setItem(count, 0, title)
             self.setItem(count, 1, steps)
-            count = count+1
+            count += 1
         self.setHorizontalHeaderLabels(self.HEADERS)
 
     def update_data(self, data: List[Recipe]):
@@ -42,5 +43,5 @@ class RecipeTableView(QTableWidget):
         count = 0
         for r in self.__data:
             if r.is_visible():
-                count = count + 1
+                count += 1
         return count

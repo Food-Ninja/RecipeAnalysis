@@ -13,8 +13,8 @@ class Step:
     def is_visible(self) -> bool:
         return self.__visible
 
-    def set_visibility(self, new_val: bool):
-        self.__visible = new_val
+    def set_visibility(self, vis: bool):
+        self.__visible = vis
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.__no}. {self.__desc}'

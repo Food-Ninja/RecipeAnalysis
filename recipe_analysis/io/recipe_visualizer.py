@@ -2,7 +2,7 @@ import sys
 from typing import List
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QMainWindow
 from .recipe_table import RecipeTableView
-from recipe_analysis.model.recipe import Recipe
+from ..model import Recipe
 
 
 class RecipeVisualizer(QMainWindow):

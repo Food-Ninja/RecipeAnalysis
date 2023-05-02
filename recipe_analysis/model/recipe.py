@@ -1,5 +1,5 @@
 import re
-from typing import List
+from typing import List, Pattern
 from .instr_step import Step
 
 
@@ -18,8 +18,8 @@ class Recipe:
     def is_visible(self) -> bool:
         return self.__visibility
 
-    def set_visibility(self, new_val: bool):
-        self.__visibility = new_val
+    def set_visibility(self, vis: bool):
+        self.__visibility = vis
 
     def get_steps_as_single_string(self) -> str:
         all_steps = ''
@@ -35,7 +35,7 @@ class Recipe:
         in_title = pattern.search(self.get_title().lower()) is not None
         self.set_visibility(in_steps or in_title)
 
-    def __filter_steps(self, pattern) -> bool:
+    def __filter_steps(self, pattern: Pattern[str]) -> bool:
         has_vis_step = False
         for s in self.__step_list:
             if pattern.search(s.get_step_desc().lower()) is not None:
@@ -50,5 +50,5 @@ class Recipe:
         for s in self.__step_list:
             s.set_visibility(True)
 
-    def __str__(self):
-        print(f'{self.__title}:\n{self.get_steps_as_single_string()}')
+    def __str__(self) -> str:
+        return f'{self.__title}:\n{self.get_steps_as_single_string()}'
