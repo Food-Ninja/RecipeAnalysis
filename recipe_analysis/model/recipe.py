@@ -29,7 +29,12 @@ class Recipe:
             all_steps = f'{all_steps}\n{str(s)}'
         return all_steps.strip()
 
+    def count_visible_steps(self) -> int:
+        return len([step for step in self.__step_list if step.is_visible()])
+
     def filter_complete(self, term: str):
+        if not self.is_visible():
+            return
         pattern = re.compile(f'^(?=.*\\b{term.lower()}\\b).*$')
         in_steps = self.__filter_steps(pattern)
         in_title = pattern.search(self.get_title().lower()) is not None
@@ -38,6 +43,8 @@ class Recipe:
     def __filter_steps(self, pattern: Pattern[str]) -> bool:
         has_vis_step = False
         for s in self.__step_list:
+            if not s.is_visible():
+                continue
             if pattern.search(s.get_step_desc().lower()) is not None:
                 s.set_visibility(True)
                 has_vis_step = True

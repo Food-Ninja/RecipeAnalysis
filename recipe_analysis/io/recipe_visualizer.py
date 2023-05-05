@@ -1,6 +1,8 @@
 import sys
+import recipe_analysis.analysis as ana
 from typing import List
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QMainWindow, \
+    QCheckBox, QComboBox
 from .recipe_table import RecipeTableView
 from ..model import Recipe
 
@@ -12,6 +14,9 @@ class RecipeVisualizer(QMainWindow):
         self.__recipes = recipes
         self.central = QWidget()
         self.search = QLineEdit()
+        self.anatomy_cb = QCheckBox("Analyse Anatomy", self)
+        self.search_alg = QComboBox()
+        self.search_alg.addItems(['Bigram', '2 Step'])
         self.search_btn = QPushButton('Search')
         self.search_btn.clicked.connect(self.start_search)
         self.table = RecipeTableView(recipes, 0, 2)
@@ -20,6 +25,8 @@ class RecipeVisualizer(QMainWindow):
     def set_content(self):
         h_layout = QHBoxLayout()
         h_layout.addWidget(self.search)
+        h_layout.addWidget(self.anatomy_cb)
+        h_layout.addWidget(self.search_alg)
         h_layout.addWidget(self.search_btn)
 
         v_layout = QVBoxLayout()
@@ -38,6 +45,8 @@ class RecipeVisualizer(QMainWindow):
             r.reset_filter()
             r.filter_complete(search_text)
         self.table.update_data(self.__recipes)
+        if self.anatomy_cb.isChecked():
+            ana.search_and_print_anatomical_parts(self.__recipes, search_text, self.search_alg.currentIndex() == 0)
 
 
 def visualize_recipes(recipes: List[Recipe]):
