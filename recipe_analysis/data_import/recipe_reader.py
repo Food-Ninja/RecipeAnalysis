@@ -4,8 +4,7 @@ from typing import List
 from ..model import Recipe, Step
 
 
-def read_recipes() -> List[Recipe]:
-    data_dir = './data/'
+def read_recipes(data_dir='./data/') -> List[Recipe]:
     json_files = [pos_json for pos_json in os.listdir(data_dir) if pos_json.endswith('.json')]
     recipes = []
     # TODO: substitute logging with progress bar / GUI
