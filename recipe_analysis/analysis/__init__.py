@@ -1,1 +1,2 @@
 from .anatomy import search_and_print_anatomical_parts
+from .colour import search_and_print_colours
