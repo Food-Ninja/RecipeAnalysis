@@ -137,3 +137,5 @@ dmypy.json
 
 # folder containing scripts used only once
 recipe_analysis/one_time_use/
+/*.tmp
+/*.props

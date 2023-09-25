@@ -3,8 +3,9 @@ import recipe_analysis.analysis as ana
 from enum import Enum
 from typing import List
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QMainWindow, \
-     QComboBox
+     QComboBox, QStackedWidget
 from .recipe_table import RecipeTableView
+from .triple_table import TripleTableView
 from ..model import Recipe
 
 
@@ -14,6 +15,7 @@ class DropDownItems(Enum):
     ANATOMY_2_STEP = 'Analyse anatomy (2-Step)'
     COLOUR_BIGRAM = 'Analyse colour (Bigram)'
     COLOUR_2_STEP = 'Analyse colour (2-Step)'
+    OPENIE = 'Triple Extraction (OpenIE)'
 
 
 class RecipeVisualizer(QMainWindow):
@@ -28,7 +30,11 @@ class RecipeVisualizer(QMainWindow):
         self.search_alg.addItems([i.value for i in DropDownItems])
         self.search_btn = QPushButton('Search')
         self.search_btn.clicked.connect(self.start_search)
-        self.table = RecipeTableView(recipes, 0, 2)
+        self.widget_stack = QStackedWidget(self)
+        self.rec_table_widget = QWidget()
+        self.trip_table_widget = QWidget()
+        self.rec_table = RecipeTableView(recipes, 0, 2)
+        self.trip_table = TripleTableView([], 0, 3)
         self.set_content()
 
     def set_content(self):
@@ -39,7 +45,18 @@ class RecipeVisualizer(QMainWindow):
 
         v_layout = QVBoxLayout()
         v_layout.addLayout(h_layout)
-        v_layout.addWidget(self.table)
+        v_layout.addWidget(self.widget_stack)
+
+        rec_table_layout = QHBoxLayout()
+        rec_table_layout.addWidget(self.rec_table)
+        self.rec_table_widget.setLayout(rec_table_layout)
+        self.widget_stack.addWidget(self.rec_table_widget)
+        self.widget_stack.setCurrentWidget(self.rec_table_widget)
+
+        trip_table_layout = QHBoxLayout()
+        trip_table_layout.addWidget(self.trip_table)
+        self.trip_table_widget.setLayout(trip_table_layout)
+        self.widget_stack.addWidget(self.trip_table_widget)
 
         self.central.setLayout(v_layout)
         self.setCentralWidget(self.central)
@@ -53,14 +70,22 @@ class RecipeVisualizer(QMainWindow):
             for r in self.__recipes:
                 r.reset_filter()
                 r.filter_complete(search_text)
-            self.table.update_data(self.__recipes)
+            self.rec_table.update_data(self.__recipes)
             self.__last_search = search_text
         txt = self.search_alg.currentText()
         if txt != DropDownItems.DEFAULT.value:
             if txt == DropDownItems.ANATOMY_2_STEP.value or txt == DropDownItems.ANATOMY_BIGRAM.value:
                 ana.search_and_print_anatomical_parts(self.__recipes, search_text, txt == DropDownItems.ANATOMY_BIGRAM.value)
+                self.widget_stack.setCurrentWidget(self.rec_table_widget)
             if txt == DropDownItems.COLOUR_2_STEP.value or txt == DropDownItems.COLOUR_BIGRAM.value:
                 ana.search_and_print_colours(self.__recipes, search_text, txt == DropDownItems.COLOUR_BIGRAM.value)
+            self.widget_stack.setCurrentWidget(self.rec_table_widget)
+            if txt == DropDownItems.OPENIE.value:
+                triples = ana.extract_triples(self.__recipes, search_text)
+                self.trip_table.update_data(triples)
+                self.widget_stack.setCurrentWidget(self.trip_table_widget)
+        else:
+            self.widget_stack.setCurrentWidget(self.rec_table_widget)
 
 
 def visualize_recipes(recipes: List[Recipe]):
