@@ -16,6 +16,7 @@ class DropDownItems(Enum):
     COLOUR_BIGRAM = 'Analyse colour (Bigram)'
     COLOUR_2_STEP = 'Analyse colour (2-Step)'
     OPENIE = 'Triple Extraction (OpenIE)'
+    FRU_AND_VEG = 'Count Fruits & Vegetables'
 
 
 class RecipeVisualizer(QMainWindow):
@@ -62,9 +63,15 @@ class RecipeVisualizer(QMainWindow):
         self.setCentralWidget(self.central)
 
     def start_search(self):
+        search_type = self.search_alg.currentText()
+        if search_type == DropDownItems.FRU_AND_VEG.value:
+            ana.count_fruit_and_veggie_occurrences(self.__recipes)
+            return
+
         search_text = self.search.text()
         if not search_text:
             return
+
         # TODO: Add progress bar (or anything to keep GUI responsive)
         if search_text != self.__last_search:
             for r in self.__recipes:
@@ -72,20 +79,19 @@ class RecipeVisualizer(QMainWindow):
                 r.filter_complete(search_text)
             self.rec_table.update_data(self.__recipes)
             self.__last_search = search_text
-        txt = self.search_alg.currentText()
-        if txt != DropDownItems.DEFAULT.value:
-            if txt == DropDownItems.ANATOMY_2_STEP.value or txt == DropDownItems.ANATOMY_BIGRAM.value:
-                ana.search_and_print_anatomical_parts(self.__recipes, search_text, txt == DropDownItems.ANATOMY_BIGRAM.value)
-                self.widget_stack.setCurrentWidget(self.rec_table_widget)
-            if txt == DropDownItems.COLOUR_2_STEP.value or txt == DropDownItems.COLOUR_BIGRAM.value:
-                ana.search_and_print_colours(self.__recipes, search_text, txt == DropDownItems.COLOUR_BIGRAM.value)
+
+        if search_type == DropDownItems.DEFAULT.value:
             self.widget_stack.setCurrentWidget(self.rec_table_widget)
-            if txt == DropDownItems.OPENIE.value:
-                triples = ana.extract_triples(self.__recipes, search_text)
-                self.trip_table.update_data(triples)
-                self.widget_stack.setCurrentWidget(self.trip_table_widget)
-        else:
+        if search_type == DropDownItems.ANATOMY_2_STEP.value or search_type == DropDownItems.ANATOMY_BIGRAM.value:
+            ana.search_and_print_anatomical_parts(self.__recipes, search_text, search_type == DropDownItems.ANATOMY_BIGRAM.value)
             self.widget_stack.setCurrentWidget(self.rec_table_widget)
+        if search_type == DropDownItems.COLOUR_2_STEP.value or search_type == DropDownItems.COLOUR_BIGRAM.value:
+            ana.search_and_print_colours(self.__recipes, search_text, search_type == DropDownItems.COLOUR_BIGRAM.value)
+            self.widget_stack.setCurrentWidget(self.rec_table_widget)
+        if search_type == DropDownItems.OPENIE.value:
+            triples = ana.extract_triples(self.__recipes, search_text)
+            self.trip_table.update_data(triples)
+            self.widget_stack.setCurrentWidget(self.trip_table_widget)
 
 
 def visualize_recipes(recipes: List[Recipe]):

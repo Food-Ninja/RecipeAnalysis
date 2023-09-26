@@ -135,7 +135,6 @@ dmypy.json
 # idea folder created by Pycharm
 .idea/
 
-# folder containing scripts used only once
-recipe_analysis/one_time_use/
+# temporary downloads from OpenIE
 /*.tmp
 /*.props
