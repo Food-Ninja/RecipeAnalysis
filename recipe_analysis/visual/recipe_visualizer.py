@@ -15,6 +15,10 @@ class DropDownItems(Enum):
     ANATOMY_2_STEP = 'Analyse anatomy (2-Step)'
     COLOUR_BIGRAM = 'Analyse colour (Bigram)'
     COLOUR_2_STEP = 'Analyse colour (2-Step)'
+    TOOL_BIGRAM = 'Analyse removal tool (Bigram)'
+    TOOL_2_STEP = 'Analyse removal tool (2-step)'
+    EDIBILITY_BIGRAM = 'Analyse edibility (Bigram)'
+    EDIBILITY_2_STEP = 'Analyse edibility (2-step)'
     OPENIE = 'Triple Extraction (OpenIE)'
     FRU_AND_VEG = 'Count Fruits & Vegetables'
 
@@ -87,6 +91,12 @@ class RecipeVisualizer(QMainWindow):
             self.widget_stack.setCurrentWidget(self.rec_table_widget)
         if search_type == DropDownItems.COLOUR_2_STEP.value or search_type == DropDownItems.COLOUR_BIGRAM.value:
             ana.search_and_print_colours(self.__recipes, search_text, search_type == DropDownItems.COLOUR_BIGRAM.value)
+            self.widget_stack.setCurrentWidget(self.rec_table_widget)
+        if search_type == DropDownItems.TOOL_2_STEP.value or search_type == DropDownItems.TOOL_BIGRAM.value:
+            ana.search_and_print_removal_tool(self.__recipes, search_text, search_type == DropDownItems.TOOL_BIGRAM.value)
+            self.widget_stack.setCurrentWidget(self.rec_table_widget)
+        if search_type == DropDownItems.EDIBILITY_2_STEP.value or search_type == DropDownItems.EDIBILITY_BIGRAM.value:
+            ana.search_and_print_edibility(self.__recipes, search_text, search_type == DropDownItems.EDIBILITY_BIGRAM.value)
             self.widget_stack.setCurrentWidget(self.rec_table_widget)
         if search_type == DropDownItems.OPENIE.value:
             triples = ana.extract_triples(self.__recipes, search_text)

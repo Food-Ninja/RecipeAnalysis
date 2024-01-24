@@ -2,3 +2,5 @@ from .anatomy import search_and_print_anatomical_parts
 from .colour import search_and_print_colours
 from .openie_extractor import extract_triples
 from .fruit_veggie_occurrences import count_fruit_and_veggie_occurrences
+from .tools import search_and_print_removal_tool
+from .edibility import search_and_print_edibility
