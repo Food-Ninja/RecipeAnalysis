@@ -4,3 +4,4 @@ from .openie_extractor import extract_triples
 from .fruit_veggie_occurrences import count_fruit_and_veggie_occurrences
 from .tools import search_and_print_removal_tool
 from .edibility import search_and_print_edibility
+from .metadata import get_corpus_metadata
